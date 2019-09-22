@@ -53,32 +53,34 @@ public:
 	void add_argument(std::string, int, std::vector<std::string>, std::string);
   void parse_args(int, std::vector<std::string>);
   template <typename type>
-  type get_value(std::string key) {
-    if (typeid(type) == typeid(std::string)) {
-      //if (arguments_[key].nargs_ == 1) {
-        if (!arguments_[key].value_.empty()) {
-        	//return arguments_[key].value_[0];
-        }
-      //} 
-      //else {
-      //  return arguments_[key].value_;
-      //}
-    } else if (typeid(type) == typeid(int)) {
-      //if (arguments_[key].nargs_ == 1) {
-        return std::atoi(arguments_[key].value_[0].c_str());
-      //}
-    } else if (typeid(type) == typeid(float)) {
-        return  float(std::atof(arguments_[key].value_[0].c_str()));
-    } else if (typeid(type) == typeid(double)) {
-        return  std::atof(arguments_[key].value_[0].c_str());
-    }
-    else {
-      printf("unkonwn type.\n");
-    }
-  }
-  std::string get_value(std::string key) {
-    return arguments_[key].value_[0];
-  }
+  type get_value(std::string key); 
+  //{
+  //  if (typeid(type) == typeid(std::string)) {
+  //    //if (arguments_[key].nargs_ == 1) {
+  //      if (!arguments_[key].value_.empty()) {
+  //      	//return arguments_[key].value_[0];
+  //      }
+  //    //} 
+  //    //else {
+  //    //  return arguments_[key].value_;
+  //    //}
+  //  } else if (typeid(type) == typeid(int)) {
+  //    //if (arguments_[key].nargs_ == 1) {
+  //      return std::atoi(arguments_[key].value_[0].c_str());
+  //    //}
+  //  } else if (typeid(type) == typeid(float)) {
+  //      return  float(std::atof(arguments_[key].value_[0].c_str()));
+  //  } else if (typeid(type) == typeid(double)) {
+  //      return  std::atof(arguments_[key].value_[0].c_str());
+  //  }
+  //  else {
+  //    printf("unkonwn type.\n");
+  //  }
+  //}
+
+  //std::string get_value(std::string key) {
+  //  return arguments_[key].value_[0];
+  //}
 
   void print_help();
   void print_invalid();
@@ -98,9 +100,6 @@ public:
   template <typename type>
   type get_value(std::string key) {
     return parser_->get_value<type>(key);
-  }
-  std::string get_value(std::string key) {
-    return parser_->get_value(key);
   }
   void print_help();
   void print_invalid();

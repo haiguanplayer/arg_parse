@@ -2,8 +2,8 @@
 #include <iostream>
 #include <typeinfo>
 
-using namespace argparse;
 
+namespace argparse{
 
 Argument::Argument(std::string name, int nargs, std::vector<std::string> choices, std::string help) {
   name_ = name;
@@ -50,6 +50,73 @@ void Parser::parse_args(int argc, std::vector<std::string> argv) {
   }  
 }
 
+// std::string value
+template <>
+std::string Parser::get_value<std::string>(std::string key) {
+    return arguments_[key].value_[0];
+}
+
+// bool value
+template <>
+bool Parser::get_value<bool>(std::string key) {
+    return (bool)std::atoi(arguments_[key].value_[0].c_str());
+}
+
+// int value 
+template <>
+int Parser::get_value<int>(std::string key) {
+    return std::atoi(arguments_[key].value_[0].c_str());
+}
+
+// float value
+template <>
+float Parser::get_value<float>(std::string key) {
+    return (float)std::atof(arguments_[key].value_[0].c_str());
+}
+
+// double value
+template <>
+double Parser::get_value<double>(std::string key) {
+    return std::atof(arguments_[key].value_[0].c_str());
+}
+
+// std::vector<std::string> value
+template <>
+std::vector<std::string> Parser::get_value<std::vector<std::string>>(std::string key) {
+  return arguments_[key].value_;
+}
+
+// std::vector<bool> value
+template <>
+std::vector<bool> Parser::get_value<std::vector<bool>>(std::string key) {
+  std::vector<bool> res;
+  std::transform(arguments_[key].value_.begin(), arguments_[key].value_.end(), std::back_inserter(res), [](const std::string &x) { return (bool)std::atoi(x.c_str()); });
+  return res;
+}
+
+// std::vector<int> value
+template <>
+std::vector<int> Parser::get_value<std::vector<int>>(std::string key) {
+  std::vector<int> res;
+  std::transform(arguments_[key].value_.begin(), arguments_[key].value_.end(), std::back_inserter(res), [](const std::string &x) { return std::atoi(x.c_str()); });
+  return res;
+}
+
+// std::vector<float> value
+template <>
+std::vector<float> Parser::get_value<std::vector<float>>(std::string key) {
+  std::vector<float> res;
+  std::transform(arguments_[key].value_.begin(), arguments_[key].value_.end(), std::back_inserter(res), [](const std::string &x) { return (float)std::atof(x.c_str()); });
+  return res;
+}
+// std::vector<double> value
+template <>
+std::vector<double> Parser::get_value<std::vector<double>>(std::string key) {
+  std::vector<double> res;
+  std::transform(arguments_[key].value_.begin(), arguments_[key].value_.end(), std::back_inserter(res), [](const std::string &x) { return std::atof(x.c_str()); });
+  return res;
+}
+
 Parser* ArgParse::add_parser() {
   return new Parser();
 }
@@ -78,4 +145,5 @@ void ArgParse::parse_args(int argc, char **argv) {
 
 ArgParse ArgParse::add_subparsers(std::string name) {
   return ArgParse(name);
+}
 }
