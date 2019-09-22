@@ -117,21 +117,25 @@ std::vector<double> Parser::get_value<std::vector<double>>(std::string key) {
   return res;
 }
 
-Parser* ArgParse::add_parser() {
-  return new Parser();
+Parser* ArgParse::add_parser(std::string name) {
+  return parser_[name] = new Parser();
 }
 
 ArgParse::ArgParse(std::string name) {
   settings_["name"] = name;
-  parser_ = add_parser();
+  parser_name_ = "default";
+  add_parser(parser_name_);
 }
 
+
 ArgParse::~ArgParse() {
-  delete parser_;
+  for (auto it : parser_) {
+    delete it.second;
+  }
 }
 
 void ArgParse::add_argument(std::string name, int nargs, std::vector<std::string> choices, std::string help) {
-  parser_->add_argument(name, nargs, choices, help);
+  parser_[parser_name_]->add_argument(name, nargs, choices, help);
 }
 
 void ArgParse::parse_args(int argc, char **argv) {
@@ -140,7 +144,13 @@ void ArgParse::parse_args(int argc, char **argv) {
    std::string tmp_arg = argv[i];
     arg_vec.push_back(tmp_arg);
   }
-  parser_->parse_args(argc, arg_vec);
+  if (parser_.size() == 1) {
+    parser_[parser_name_]->parse_args(argc, arg_vec);
+  } else {
+    parser_name_ = arg_vec[1];
+    arg_vec.erase(arg_vec.begin() + 1);
+    parser_[parser_name_]->parse_args(argc - 1, arg_vec);
+  }
 }
 
 ArgParse ArgParse::add_subparsers(std::string name) {

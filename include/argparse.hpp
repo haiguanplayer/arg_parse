@@ -50,43 +50,15 @@ class Parser {
 public:
   Parser() = default;
   ~Parser() = default;
-	void add_argument(std::string, int, std::vector<std::string>, std::string);
+	void add_argument(std::string name = "", int nargs = 1, std::vector<std::string> choices = {}, std::string help = "");
   void parse_args(int, std::vector<std::string>);
   template <typename type>
   type get_value(std::string key); 
-  //{
-  //  if (typeid(type) == typeid(std::string)) {
-  //    //if (arguments_[key].nargs_ == 1) {
-  //      if (!arguments_[key].value_.empty()) {
-  //      	//return arguments_[key].value_[0];
-  //      }
-  //    //} 
-  //    //else {
-  //    //  return arguments_[key].value_;
-  //    //}
-  //  } else if (typeid(type) == typeid(int)) {
-  //    //if (arguments_[key].nargs_ == 1) {
-  //      return std::atoi(arguments_[key].value_[0].c_str());
-  //    //}
-  //  } else if (typeid(type) == typeid(float)) {
-  //      return  float(std::atof(arguments_[key].value_[0].c_str()));
-  //  } else if (typeid(type) == typeid(double)) {
-  //      return  std::atof(arguments_[key].value_[0].c_str());
-  //  }
-  //  else {
-  //    printf("unkonwn type.\n");
-  //  }
-  //}
-
-  //std::string get_value(std::string key) {
-  //  return arguments_[key].value_[0];
-  //}
-
   void print_help();
   void print_invalid();
 
-
 private:
+  
   std::vector<std::string> arg_name_;
   std::map<std::string, Argument> arguments_; 
 };
@@ -99,17 +71,17 @@ public:
   void parse_args(int, char **);
   template <typename type>
   type get_value(std::string key) {
-    return parser_->get_value<type>(key);
+    return parser_[parser_name_]->get_value<type>(key);
   }
   void print_help();
   void print_invalid();
   ArgParse add_subparsers(std::string);
+  Parser* add_parser(std::string);
 
 private:
 
-  Parser* add_parser();
-
-  Parser *parser_;
+  std::string parser_name_;
+  std::map<std::string, Parser *> parser_;
   std::map<std::string, std::string> settings_;
 };
 } // namespace
