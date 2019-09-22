@@ -35,16 +35,13 @@ void Parser::parse_args(int argc, std::vector<std::string> argv) {
       }
       ++cnt;
     } else { // optional arguments
-printf("??%d %d %s %s\n", i, cnt, arg_name_[cnt].c_str(), argv[i].c_str());
-      while (cnt < arg_name_.size() && arg_name_[cnt] != argv[i]) { ++cnt;printf("cnt %d\n", cnt); }
+      while (cnt < arg_name_.size() && arg_name_[cnt] != argv[i]) { ++cnt;}
       if (cnt >= arg_name_.size()) {
         printf("parse error optional arguments.");
         break;
       }
       for (int j = 0; j < arguments_[arg_name_[cnt]].nargs_; ++j) {
-printf("%s\n", argv[i+1].c_str());
         arguments_[arg_name_[cnt]].add_value(argv[++i]);
-printf("...\n");
       }
       ++i;
       ++cnt;

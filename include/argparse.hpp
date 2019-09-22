@@ -76,6 +76,9 @@ public:
       printf("unkonwn type.\n");
     }
   }
+  std::string get_value(std::string key) {
+    return arguments_[key].value_[0];
+  }
 
   void print_help();
   void print_invalid();
@@ -95,6 +98,9 @@ public:
   template <typename type>
   type get_value(std::string key) {
     return parser_->get_value<type>(key);
+  }
+  std::string get_value(std::string key) {
+    return parser_->get_value(key);
   }
   void print_help();
   void print_invalid();
