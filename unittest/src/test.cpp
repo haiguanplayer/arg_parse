@@ -1,9 +1,12 @@
+#include <cstdio>
 #include <iostream>
+#include "gtest/gtest.h"
 #include "argparse.hpp"
+#include "arg.h"
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+TEST(sample, first) {
   argparse::ArgParse parse("empty");
   argparse::ArgParse sub_parse = parse.add_subparsers("sub");
   argparse::Parser* sub1 = sub_parse.add_parser("sub1");
@@ -16,18 +19,11 @@ int main(int argc, char *argv[]) {
   sub2->add_argument("name");
   sub2->add_argument("height");
   sub2->add_argument("width");
-  //parse.add_argument("channels");
-  //parse.add_argument("--style", 2);
-  //parse.add_argument("point",2);
-  //parse.add_argument("--format_name", 0, std::vector<std::string>({"bgr", "gray"}));
+
+  int argc = 5;
+  char argv[][] = {"", "bgr", "9.1", "5.3"};
   sub_parse.parse_args(argc, argv);
   cout << sub_parse.get_value<std::string>("name") << "\n";
   cout << sub_parse.get_value<float>("height") << "\n";
   cout << sub_parse.get_value<float>("width") << "\n";
-  //cout << parse.get_value<int>("channels") << "\n";
-  //std::vector<int> style{};
-  //style =  parse.get_value<std::vector<int>>("--style");
-  //for (int st : style) {
-  // printf("style is %d\n", st);
-  //}
 }
