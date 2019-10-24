@@ -4,8 +4,8 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <typeinfo>
 #include <algorithm>
+#include <memory>
 
 namespace argparse {
 
@@ -69,6 +69,7 @@ public:
   ~ArgParse();
 	void add_argument(std::string name = "", int nargs = 1, std::vector<std::string> choices = {}, std::string help = "");
   void parse_args(int, char **);
+  void parse_args(int, std::vector<std::string>);
   template <typename type>
   type get_value(std::string key) {
     return parser_[parser_name_]->get_value<type>(key);

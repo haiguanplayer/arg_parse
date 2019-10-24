@@ -153,7 +153,18 @@ void ArgParse::parse_args(int argc, char **argv) {
   }
 }
 
+void ArgParse::parse_args(int argc, std::vector<std::string> arg_vec) {
+  if (parser_.size() == 1) {
+    parser_[parser_name_]->parse_args(argc, arg_vec);
+  } else {
+    parser_name_ = arg_vec[1];
+    arg_vec.erase(arg_vec.begin() + 1);
+    parser_[parser_name_]->parse_args(argc - 1, arg_vec);
+  }
+}
+
 ArgParse ArgParse::add_subparsers(std::string name) {
   return ArgParse(name);
 }
-}
+
+} // namespace
