@@ -50,7 +50,7 @@ class Parser {
 public:
   Parser() = default;
   ~Parser() = default;
-	void add_argument(std::string name = "", int nargs = 1, std::vector<std::string> choices = {}, std::string help = "");
+  void add_argument(std::string name = "", int nargs = 1, std::vector<std::string> choices = {}, std::string help = "");
   void parse_args(int, std::vector<std::string>);
   template <typename type>
   type get_value(std::string key); 
@@ -66,7 +66,6 @@ private:
 class ArgParse {
 public:
   ArgParse(std::string);
-  ~ArgParse();
 	void add_argument(std::string name = "", int nargs = 1, std::vector<std::string> choices = {}, std::string help = "");
   void parse_args(int, char **);
   void parse_args(int, std::vector<std::string>);
@@ -77,12 +76,12 @@ public:
   void print_help();
   void print_invalid();
   ArgParse add_subparsers(std::string);
-  Parser* add_parser(std::string);
+  std::shared_ptr<Parser> add_parser(std::string);
 
 private:
 
   std::string parser_name_;
-  std::map<std::string, Parser *> parser_;
+  std::map<std::string, std::shared_ptr<Parser>> parser_;
   std::map<std::string, std::string> settings_;
 };
 } // namespace

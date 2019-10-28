@@ -1,11 +1,12 @@
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include "gtest/gtest.h"
 #include "argparse.hpp"
 
 using namespace std;
 
-TEST(sample, first) {
+TEST(sample, subparsers) {
   argparse::ArgParse parse("empty");
   argparse::ArgParse sub_parse = parse.add_subparsers("sub");
   auto sub1 = sub_parse.add_parser("sub1");

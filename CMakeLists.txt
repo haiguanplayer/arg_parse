@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.9)
 
 project (argparse)
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 file(GLOB_RECURSE CPP_FILES   ./src/*.cpp)
 
 include_directories(include)
